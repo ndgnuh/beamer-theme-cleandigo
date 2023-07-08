@@ -1,0 +1,346 @@
+\documentclass[aspectratio=169,mathserif]{beamer}
+\usetheme{cleandigo}
+\input{setups}
+\usepackage{subcaption}
+
+% \usepackage[utf8x]{inputenc}
+
+\renewcommand*{\thefootnote}{(\arabic{footnote})}
+
+
+\usepackage[
+    maxcitenames=1,
+	maxnames=1,
+	% style=ieee,
+	sorting=ynt,
+    sortcites,
+    natbib=true,
+    doi=false,
+    isbn=false,
+    url=false,
+    eprint=false,
+]{biblatex}
+\DefineBibliographyStrings{Vietnamese}{
+    in = {trong},
+    and = {và},
+    andothers = {và các cộng sự}
+}
+\input{myfootcite}
+\addbibresource{refs.bib}
+
+% \usepackage[numbers,sort]{natbib}
+% \usepackage{usebib}
+% \usepackage{bibentry}
+% \bibinput{refs}
+% \nobibliography{refs.bib}
+% \newcommand{\citef}[1]{%t
+%     \footnote{%
+%     \citeauthor{#1}--\textit{\usebibentry{#1}{title}}\cite{#1}
+%     }%
+% }
+% \newcommand{\citefm}[2]{%t
+%     \footnotetext[#2]{%
+%     \citeauthor{#1}--\textit{\usebibentry{#1}{title}}\cite{#1}
+%     }%
+% }
+
+\newcommand{\citef}[1]{\cite{#1}\ffcite{#1}}
+
+\newcommand{\Image}[1]{%
+	\sbox0{\includegraphics[height=0.65\paperheight]{#1}}%
+	\ifdim\wd0 < \textwidth
+	\includegraphics[height=0.65\paperheight]{#1}%
+	\else
+	\includegraphics[width=\textwidth]{#1}%
+	\fi%
+}
+
+\newif\iffirsttoc
+\firsttoctrue
+\AtBeginSection[]
+{
+    \begin{frame}{Mục lục}  
+        \iffirsttoc
+            \tableofcontents
+            \global\firsttocfalse
+        \else
+            \tableofcontents[currentsection,
+            % hideothersubsections,
+            subsectionstyle=show/shaded/hide,
+            subsubsectionstyle=show/show/show/hide
+            ]
+        \fi
+    \end{frame} 
+}
+
+
+
+% === BEAMER STUFF %%%
+
+% \usepackage{layout}
+
+\begin{document}
+
+\begin{frame}[noframenumbering,Title]{}
+    \relax
+    \vfill
+    {
+        \usebeamercolor[fg]{title}{%
+        % artistic choice, do not capitalize anything here
+        \emph{\large Các mô hình ngẫu nhiên và ứng dụng:}
+
+        {\Large CHUYỂN ĐỘNG BROWN, MÔ HÌNH HỌC SÂU VÀ NHÚNG DỮ LIỆU}
+        }   
+
+        \medskip
+        
+        \hrule
+    }
+
+    \vfill
+
+    \textbf{Giảng viên hướng dẫn:} TS.\,Nguyễn Thị Ngọc Anh
+
+    \textbf{Học viên:} Nguyễn Đức Hùng${}\sim{}$20212498M
+    
+    \vfill
+    Hà Nội, Tháng 03 năm 2023
+    \vfill
+\end{frame}
+
+% \begin{frame}[Title]
+%     \vspace{-5em}
+%     \layout
+% \end{frame}
+\section{Giới thiệu}
+
+\begin{frame}{Giới thiệu}
+\begin{itemize}
+    \item Vật lý
+    \item Tài chính
+    \item ???
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Giới thiệu}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{figures/fbm(p).jpg}
+        \caption{%
+            Inigo Quilez--$f(p) = \fbm(p+\fbm(p+\fbm(p)))$%
+            \footnote[frame]{\url{https://iquilezles.org/articles/warp/}}
+        }
+        \label{fig:my_label}
+    \end{figure}
+\end{frame}
+
+\section{Chuyển động Brown}
+\begin{frame}{Tính chất}
+    \begin{prop}\label{prop:nowhere-diff-brown}
+    Chuyển động Brown hầu chắc chắn không khả vi
+    tại $t>0$\citef{S096:17}.
+    \end{prop}
+\end{frame}
+
+
+\begin{frame}{Tính chất}
+\begin{align}
+f\left(x+\Delta x\right)-f\left(x\right)&=\sum_{k=1}^{\infty}\frac{\left(\Delta x\right)^{k}}{k!}f^{\left(k\right)}\left(x\right)\\
+\Ex\left[\left(\Delta B_{t}\right)^{2}\right] & =\Ex\left[\left(B_{t+\Delta t}-B_{t}\right)^{2}\right]\\
+ & =\Var\left[\Delta B_{t}\right]+\Ex\left[\Delta B_{t}\right]=\Delta t.
+\end{align}
+\end{frame}
+
+\begin{frame}{Tính chất}
+Giải tích
+\begin{align}
+    \D f\left(t,x\right)=\frac{\partial f}{\partial x}\D x+\frac{\partial f}{\partial t}\D t,
+\end{align}
+Giải tích Itô
+\begin{align}
+    \D f\left(t,B_{t}\right) & =\frac{\partial f}{\partial x}\D B_{t}+\frac{\partial f}{\partial t}\D t+\frac{1}{2}\cdot\frac{\partial^{2}f}{\partial x^{2}}\left(\D B_{t}\right)^{2} \nonumber\\
+     & =\left(\frac{\partial f}{\partial t}+\frac{1}{2}\cdot\frac{\partial^{2}f}{\partial x^{2}}\right)\D t+\frac{\partial f}{\partial x}\D B_{t}.\label{eq:ito-diff}
+\end{align}
+\end{frame}
+
+\section{Chuyển động Brown và Transformer}
+
+\begin{frame}{Một số định nghĩa}
+\begin{defn}[Layer Normalization]
+\begin{equation}
+\LayerNorm\left(x\right)=\frac{x-\Ex\left[x\right]}{\sqrt{\Var\left[x\right]}}\cdot\gamma+\beta,    
+\end{equation}
+\end{defn}
+
+\begin{defn}[Softmax]
+\begin{equation}
+\Softmax\left(x\right)=\left[\frac{\exp\left(x_{j}\right)}{\sum_{i=1}^{d}\exp\left(x_{i}\right)}\right]_{j=\overline{1,d}}
+\end{equation}
+\end{defn}
+\end{frame}
+
+\begin{frame}{Một số định nghĩa}
+\begin{defn}[Scale-dot Attention]
+    \begin{equation}
+    \Attention\left(Q,K,V\right)=\Softmax\left(\frac{QK^{\top}}{\sqrt{d}}\right)\cdot V
+    \end{equation}
+\end{defn}
+\end{frame}
+
+\begin{frame}{Một số định nghĩa}
+    \begin{figure}
+        \centering
+        \Image{figures/transformer-layer.png}
+        \caption{Một lớp transformer}
+    \end{figure}
+\end{frame}
+\begin{frame}{Quan sát}
+    \begin{remark}
+    \begin{itemize}
+        \item Tính chất chuẩn hoá\citef{LayerNormInTransformer}
+            \begin{equation}
+                \left\lVert \LayerNorm\left(x\right)\right\rVert =\sqrt{d};
+            \end{equation}
+        \item Ma trận chuyển\cite{BrownianTransformers}
+            \begin{equation}
+    p_{i,j}=\exp\left(\frac{-\left\lVert v_{i}-v_{j}\right\rVert ^{2}}{2\sqrt{d}}\right);
+            \end{equation}
+        \item Thuật toán tối ưu bậc 2\citef{BrownianTransformers}.
+    \end{itemize}
+    \end{remark}
+\end{frame}
+
+
+\begin{frame}{Quan sát}
+    \begin{remark}
+    \begin{itemize}
+        \item Multi-head?
+        \item Kết nối tắt
+            \begin{equation}
+                y = f(x) + x;
+            \end{equation}
+        \item Lớp chiếu
+            \begin{equation}
+                y = x\cdot A^{\top} + b.
+            \end{equation}
+    \end{itemize}
+    \end{remark}
+\end{frame}
+
+\section{Chuyển động Brown và $\Delta$VAE}
+
+\begin{frame}{VAE}
+\begin{figure}
+    \centering
+    \Image{figures/vae.png}
+    \caption{Ý tưởng của VAE}
+\end{figure}
+\end{frame}
+
+\begin{frame}{VAE}
+    \begin{itemize}
+        \item Không gian biến ẩn $Z$;
+        \item Phân phối biến ẩn $\mathbb{P}_{Z}$;
+        \item Họ phân phối mã hoá $\mathbb{Q}_{Z}$;
+        \item Họ phân phối giải mã $\mathbb{P}_{X}$;
+        \item Hàm đổi biến $g$.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{VAE}
+\begin{defn}[Hàm mục tiêu]
+\begin{equation}
+    L\left(x\right)=-\Ex_{z\sim\mathbb{Q}_{Z}^{\boldsymbol{\alpha}\left(x\right)}}\left[\log p_{X}^{\beta\left(z\right)}\left(x\right)\right]+D_{\mathrm{KL}}\left(\mathbb{Q}_{Z}^{\Enc\left(x\right)}\Vert\mathbb{P}_{Z}\right).
+\end{equation}
+\end{defn}
+\end{frame}
+
+
+\begin{frame}{$\Delta$VAE}{Sự phù hợp với dữ liệu}
+\begin{itemize}
+    \item Phân phối chuẩn/Gauss?
+    \item Không gian $\R^d$?
+    \item Không gian con bất kỳ?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{$\Delta$VAE}
+\begin{defn}[Xây dựng đổi biến\citef{DiffusionVAE}]
+\begin{align}
+    g \colon{} &\Gamma\times\left(0,\infty\right)\times Z \to Z\\
+    g\left(\gamma,t,z\right) & \sim\mathbb{Q}_{Z}^{t,z}
+\end{align}
+\end{defn}
+\end{frame}
+
+\begin{frame}{$\Delta$VAE}
+\begin{defn}[{Xây dựng du động ngẫu nhiên}\citef{DiffusionVAE}]
+    \begin{align}
+    z_{1}&=P\left(z+\sqrt{\tau}\varepsilon_{1}\right),\\
+    z_{2}&=P\left(P\left(z+\sqrt{\tau}\varepsilon_{1}\right)+\sqrt{\tau} \varepsilon_{2}\right)\\
+    \vdots & \nonumber
+    \end{align}
+\end{defn}
+\end{frame}
+
+\begin{frame}{$\Delta$VAE}
+    \vspace{1em}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.6\textwidth]{figures/random-walk-manifold-1d.png}
+        \caption{Du động ngẫu nhiên trên một mặt trơn $Z$.\citef{DiffusionVAE}}
+        \label{fig:random-walk-manifold}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{$\Delta$VAE}
+\begin{defn}[Phép đổi biến với chuyển động Brown.\citef{DiffusionVAE}]
+\begin{align}
+g & \colon\mathcal{E}^{N}\times\left(0,\infty\right)\times Z\to Z,\\
+g\left(\varepsilon_{1},\ldots,\varepsilon_{N},t,z\right) & =P\left(\cdots P\left(P\left(z+\sqrt{\frac{t}{N}}\varepsilon_{1}\right)+\frac{t}{N}\varepsilon_{2}\right)\cdots+\sqrt{\frac{t}{N}}\varepsilon_{N}\right).
+\end{align}
+\end{defn}
+\end{frame}
+
+\begin{frame}{$\Delta$VAE}
+    \vspace{-1em}
+    \begin{figure}
+        \begin{subfigure}{0.49\textwidth}
+            \centering
+            \Image{figures/mnist-latent-torus.png}
+            \caption{Mặt hình xuyến}
+        \end{subfigure}
+        \begin{subfigure}{0.49\textwidth}
+            \centering
+            \Image{figures/mnist-latent-sphere_all.png}
+            \caption{Cầu đơn vị}
+        \end{subfigure}
+        \caption{Dữ liệu MNIST nhúng lên các mặt khác nhau}
+    \end{figure}
+\end{frame}
+
+\section{Kết luận}
+
+\begin{frame}{Kết luận}
+    \begin{itemize}
+        \item Dùng chuyển động Brown kết hợp VAE để nhúng dữ liệu;
+        \item Transformer $\sim$ kết hợp, biến đổi chuyển động Brown;
+        \item Giải thích lỗ hổng trong \citef{BrownianTransformers} với ý tưởng trong \citef{DiffusionVAE};
+        \item Nhiều ứng dụng khác.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{The end}
+    Cảm ơn mọi người đã chú ý lắng nghe!
+\end{frame}
+
+% \section{Tài liệu tham khảo}
+\begin{frame}[fragile,allowframebreaks]{Tài liệu tham khảo}
+    % Bài này chứng minh mặt
+    \nocite{HSU}
+    \printbibliography
+    % \bibliographystyle{IEEEtranN}
+    % \bibliography{refs.bib}
+\end{frame}
+\end{document}

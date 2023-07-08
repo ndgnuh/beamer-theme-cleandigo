@@ -1,0 +1,86 @@
+% FOOTNOTE CITATION HACK
+% author: ndgnuh
+% usage:
+% \input{myfootcite} % input this file
+% \begin{frame}
+%   \cite{MyRef} % first citing
+%    ...
+%   \cite{MyRef} % second citing of same document
+%    \ffcite{MyRef} % This command makes it appears in the footnote
+% \end{frame}
+\makeatletter
+
+\DeclareCiteCommand{\cite}[\mkbibbrackets]
+{%
+	%\usebibmacro{cite:init}%
+	\usebibmacro{prenote}}
+{%
+	\usebibmacro{citeindex}%
+	%\usebibmacro{cite:comp}%
+	\usebibmacro{cite}%
+	\ifciteseen
+	{}
+	{\csnumgdef{cbx@instcount\thefield{entrykey}}{-100}}%
+}
+{\multicitedelim}
+{%
+	\usebibmacro{postnote}%
+}
+
+\DeclareCiteCommand{\@ffcite}[\cbx@ff]
+{%	% precode start
+	%precode end
+}
+{%	% loop code
+	\usebibmacro{citeindex}%
+	\gdef\cbx@citekey{\thefield{entrykey}}%
+	\ifciteseen
+	{}% if true, empty
+	{%	% if false
+		% if cite for the first time
+		% the the fakecount to -100
+		% this will only run at first cite?
+		%				\BibliographyWarning{\cbx@citekey is unseen, ignoring ffcite }%
+		\csnumgdef{cbx@instcount\cbx@citekey}{-100}%
+	}%
+	% end ifciteseen
+	% when meet a cite within the same page...
+	% compare two item defined by instcount and the fakecount
+	\ifsamepage%
+	{\value{instcount}} % first value
+	{\number\csuse{cbx@instcount\cbx@citekey}}% the value previously set
+	{}% do nothing if they are the same
+	{% write a footnote if not
+		\xappto{\cbx@citehook}{%
+			\noexpand\footnotetext[\thefield{labelnumber}]{%
+				\fullcite{\thefield{entrykey}}%
+			}%
+		}%
+		%				\gdef\@makefnmark\old@makefnmark
+	}%
+	\csnumgdef{cbx@instcount\cbx@citekey}{\value{instcount}}%
+	%		\usebibmacro{cite:comp}%
+	% end loop code
+}
+{}
+{\usebibmacro{postnote}}
+
+\newrobustcmd{\cbx@ff}[1]{%
+	\mkbibsuperscript{#1}%
+	\cbx@citehook%
+	\global\let\cbx@citehook=\empty%
+}
+\let\cbx@citehook=\empty
+
+\def\citecolor{black}
+\newcommand{\ffcite}[1]{%
+	\let\old@makefnmark\@makefnmark%
+	\let\oldthefootnote\thefootnote%
+	\renewcommand{\thefootnote}{[\textcolor{\citecolor}{\arabic{footnote}}]}%
+	\renewcommand{\@makefnmark}{\makebox{\normalfont\@thefnmark}}%
+	\@ffcite{#1}%
+	\renewcommand{\thefootnote}{\oldthefootnote}%
+	\renewcommand{\@makefnmark}{\old@makefnmark}%
+}
+
+\makeatother

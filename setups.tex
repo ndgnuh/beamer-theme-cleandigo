@@ -1,0 +1,57 @@
+% === LANGUAGES ===
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese]{babel}
+
+% === TYPESET and TEXT LAYOUT ===
+% DO NOT USE SETSPACE, it messes with footnote?
+% \usepackage{setspace}
+% \setstretch{1.3}
+% \usepackage{mlmodern}
+\usepackage{tgadventor}
+
+% === MATH TYPESETTING ===
+\usepackage{amsmath, amsthm, amsfonts, amssymb,
+            nicefrac}
+% define custom math env
+\theoremstyle{definition}
+\newtheorem{defn}{Định nghĩa}
+\newtheorem{prop}{Mệnh đề}
+\newtheorem{thm}{Định lý}
+\newtheorem{remark}{Quan sát}
+% \newtheorem{example}{Ví dụ}
+
+% spacing of left right
+% https://tex.stackexchange.com/questions/2607/spacing-around-left-and-right
+\let\originalleft\left
+\let\originalright\right
+\renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
+\renewcommand{\right}{\aftergroup\egroup\originalright}
+% define custom operators
+\DeclareMathOperator*{\fbm}{fBM}
+\DeclareMathOperator*{\Var}{Var}
+\DeclareMathOperator*{\D}{d\!} % Reduce kerning since \operatorname makes some space, \d is already defined
+\DeclareMathOperator*{\LayerNorm}{LayerNorm}
+\DeclareMathOperator*{\Softmax}{Softmax}
+\DeclareMathOperator*{\Attention}{Attention}
+\DeclareMathOperator*{\Enc}{enc}
+\DeclareMathOperator*{\Dec}{dec}
+\newcommand{\Ex}{\operatorname{\mathbb{E}}}
+\newcommand{\R}{\mathbb{R}}
+
+% === REFERENCE TYPESETTING ===
+% \usepackage[sort,square,numbers]{natbib}
+\usepackage{prettyref}
+\newrefformat{fig}{Hình \ref{#1}}
+\newrefformat{prop}{Mệnh đề \ref{#1}}
+\newrefformat{sec}{Mục \ref{#1}}
+
+% Cite author along with the paper
+% \let\oldciteauthor\citeauthor
+% \renewcommand{\citeauthor}[1]{\oldciteauthor{#1}\textsuperscript{\cite{#1}}}
+
+
+% === OTHER ELEMENTS ===
+\usepackage{url} 
+% \usepackage[unicode=true,pdfusetitle,breakbookmarks=true]
+%  {hyperref} % hyper links 
