@@ -3,6 +3,7 @@
 % Reference: https://github.com/ndgnuh/HUST-Beamer-Theme
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{beamerthemecleandigo}[Beamer Cleandigo theme]
+
 % Requirement
 \RequirePackage{tikz}
 \RequirePackage{xparse}
@@ -15,81 +16,48 @@
 \pgfmathparse{(\paperwidth / \paperheight) > 1.5}
 \let\longslide\pgfmathresult
 \if\longslide1
-\longslidetrue
+	\longslidetrue
 \else
-\longslidefalse
+	\longslidefalse
 \fi
 
-% Settings
-\usecolortheme{cleandigo}
-\usefonttheme{cleandigo}
-\useinnertheme{cleandigo}
-\useoutertheme{cleandigo}
-
-% sizes
-\setbeamersize{sidebar width left=0pt}
-% \setlength{\headsep}{2.25ex}
+% FLAGS
+\newif\iffootlinesection
+\newif\iftocsection
 
 %
 % Show list of section at beginning
 % of every sections
 %
-\newif\ifshowsections
-\DeclareOption{showsections}{\showsectionstrue}
-\DeclareOption{noshowsections}{\showsectionsfalse}
+\DeclareOption{tocsection}{\tocsectiontrue}
+\DeclareOption{notocsection}{\tocsectionfalse}
 \AtBeginDocument{
-    \ifshowsections
-    \AtBeginSection[] {
-        \begin{framex}[plain, noframenumbering]
-            \tableofcontents[currentsection]
-        \end{framex}
-    }
-    \fi
-    }
-    %
-    % Foot line show (sub)section or not
-    %
-    \newif\iffootlinesection
-    \DeclareOption{footlinesection}{\footlinesectiontrue}
-    \DeclareOption{nofootlinesection}{\footlinesectionfalse}
-    \newif\iffootlinesubsection
-    \DeclareOption{footlinesubsection}{\footlinesubsectiontrue}
-    \DeclareOption{nofootlinesubsection}{\footlinesubsectionfalse}
-    %
-    % Foot line show total number of pages
-    %
-    \newif\ifshowtotalpage
-    \showtotalpagefalse
-    \DeclareOption{showtotalpage}{\showtotalpagetrue}
-    \DeclareOption{noshowtotalpage}{\showtotalpagefalse}
-    \ProcessOptions
+	\iftocsection
+		\AtBeginSection[] {
+			\begin{frame}[nofootline, noframenumbering]{\contentsname}
+				\tableofcontents[
+					currentsection,
+					subsectionstyle=show/show/hide,
+					subsubsectionstyle=show/show/show/hide
+				]
+			\end{frame}
+		}
+	\fi
+}
 
-    % height for images
-    \AtBeginDocument{
-        \newcommand{\imgheight}{0.7\textheight}
-        }
+%
+% Foot line show (sub)section or not
+%
+\DeclareOption{footlinesection}{\footlinesectiontrue}
+\DeclareOption{nofootlinesection}{\footlinesectionfalse}
 
-        % Alt frac for page number instead of nicefrag
-        % Source:
-        % https://tex.stackexchange.com/questions/515264/nicefrac-or-xfrac-in-displaystyle
-        \newcommand{\altfrac}[2]{
-            {%
-                \raisebox{.5\ht\strutbox}{#1}%
-                \kern-2.2pt%
-                \rotatebox{-10}{\scalebox{1.5}[1.8]{/}}%
-                \kern-2.8pt%
-                \raisebox{-.25\ht\strutbox}{#2}%
-                }
-                }
 
-                % navigation and foot line
-                \setbeamertemplate{navigation symbols}{}
+% PROCESS OPTIONS
+\ProcessOptions
 
-                \newlength{\mysectionlength}
-                \newlength{\mysubsectionlength}
+% Load theme
+\usecolortheme{cleandigo}
+\usefonttheme{cleandigo}
+\useinnertheme{cleandigo}
+\useoutertheme{cleandigo}
 
-                \newdimen\barwidth
-                \barwidth=20pt
-                \newdimen\fabsize
-                \fabsize=13pt
-                \newdimen\sectextheight

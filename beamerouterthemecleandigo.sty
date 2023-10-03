@@ -1,67 +1,87 @@
 \ProvidesPackage{beamerouterthemecleandigo}[Cleandigo outer theme]
-\usepackage{calc}
 \mode<presentation>
 
+% No sidebar
+\setbeamersize{sidebar width left=0pt}
 
+% Default frame title is none
 \providecommand{\insertframetitle}{}
 \providecommand{\insertframesubtitle}{}
 
-
-% \makeatletter
-% \def\beamer@entrycode{\vspace*{-\headheight}}
-% \setlength{\headsep}{3in}
-% \setlength{\headheight}{3in}
-% \makeatother
-
 % Set the text margin to be the same as the frametitle margin
 \def\unileftskip{0.333in}
-\setbeamersize{text margin left=\unileftskip,text margin right=\unileftskip} 
+\setbeamersize{text margin left=\unileftskip,text margin right=\unileftskip}
 \useoutertheme[footline=authortitle]{miniframes}
 \BeforeBeginEnvironment{frame}{
-\setbeamertemplate{headline}{%
-    \relax\nointerlineskip % get rid of the weird blankspace
-    \usebeamerfont{frametitle}
-    \begin{beamercolorbox}[
-        sep=0pt,
-        leftskip=\unileftskip, 
-        rightskip=\unileftskip, % HALF
-        wd=\paperwidth,
-        ht=2em,
-        dp=1em
-        ]{frametitle}%
-        \ifx\insertframetitle\empty
-            {}\hfill%
-            \insertframenumber{}/\inserttotalframenumber%
-        \else
-            \insertframetitle%
-            \hfill%
-            \insertframenumber{}/\inserttotalframenumber%
-        \fi
-    \end{beamercolorbox}%
-    \usebeamerfont{framesubtitle}
-    \ifx\insertframesubtitle\empty
-        \begin{beamercolorbox}[sep=0pt,wd=\paperwidth,ht=2pt,dp=2pt,vmode]{framesubtitle}%
-        \end{beamercolorbox}%
-    \else
-        \begin{beamercolorbox}[left,wd=\paperwidth,ht=2.25ex,dp=1ex,leftskip=\unileftskip]{framesubtitle}%
-            \insertframesubtitle
-        \end{beamercolorbox}%
-    \fi
-    \ifx\insertframetitle\empty
-        \gdef\beamer@frametitle{~}
-    \fi
-}
+	\setbeamertemplate{headline}{%
+		\relax\nointerlineskip % get rid of the weird blankspace
+		\usebeamerfont{frametitle}
+		\begin{beamercolorbox}[
+				sep=0pt,
+				leftskip=\unileftskip,
+				rightskip=\unileftskip, % HALF
+				wd=\paperwidth,
+				ht=2em,
+				dp=1em
+			]{frametitle}%
+			\ifx\insertframetitle\empty
+				{}\hfill%
+				\insertframenumber{}/\inserttotalframenumber%
+			\else
+				\insertframetitle%
+				\hfill%
+				\insertframenumber{}/\inserttotalframenumber%
+			\fi
+		\end{beamercolorbox}%
+		\usebeamerfont{framesubtitle}
+		\ifx\insertframesubtitle\empty
+			\begin{beamercolorbox}[sep=0pt,wd=\paperwidth,ht=2pt,dp=2pt,vmode]{framesubtitle}%
+			\end{beamercolorbox}%
+		\else
+			\begin{beamercolorbox}[left,wd=\paperwidth,ht=2.25ex,dp=1ex,leftskip=\unileftskip]{framesubtitle}%
+				\insertframesubtitle
+			\end{beamercolorbox}%
+		\fi
+		\ifx\insertframetitle\empty
+			\gdef\beamer@frametitle{~}
+		\fi
+	}
 
-\setbeamertemplate{frametitle}{\vspace{2.25ex}}
-\setbeamertemplate{footline}{}
+	\setbeamertemplate{frametitle}{\vspace{2.25ex}}
+
+	% Footline
+	\setbeamertemplate{footline}{
+		% If show section in footline
+		\iffootlinesection
+			\begin{beamercolorbox}[
+					left,
+					wd=\paperwidth,
+					ht=2.25ex,
+					dp=1ex,
+					leftskip=\unileftskip
+				]{frametitle}%
+				\ifx\insertsection\empty\else
+					\insertsection
+				\fi
+				\ifx\insertsubsection\empty\else
+					\ /\ \insertsubsection
+				\fi
+			\end{beamercolorbox}%
+		\else{\relax}
+		\fi
+	}
 }
 
 \makeatletter
 \define@key{beamerframe}{Title}[true]{
 	\setbeamertemplate{headline}{}
 }
+\define@key{beamerframe}{nofootline}[true]{
+	\setbeamertemplate{footline}{}
+}
 \makeatother
 
+% TITLE PAGE WEIRD PADDING
 \setbeamertemplate{title page}{	\nointerlineskip }
 
 
