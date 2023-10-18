@@ -6,6 +6,7 @@
 
 % Requirement
 \RequirePackage{tikz}
+\RequirePackage{etoolbox}
 \RequirePackage{xparse}
 \RequirePackage{calc}
 \usetikzlibrary{positioning,shadows}
@@ -31,15 +32,25 @@
 %
 \DeclareOption{tocsection}{\tocsectiontrue}
 \DeclareOption{notocsection}{\tocsectionfalse}
+\newif\iffirsttoc
+\firsttoctrue
 \AtBeginDocument{
 	\iftocsection
 		\AtBeginSection[] {
-			\begin{frame}[nofootline]{\contentsname}
-				\tableofcontents[
-					currentsection,
-					subsectionstyle=show/show/hide,
-					subsubsectionstyle=show/show/show/hide
-				]
+			\begin{frame}[noframenumbering,nosection]{\contentsname}
+				\iffirsttoc
+					\global\firsttocfalse
+					\tableofcontents[
+						subsectionstyle=show/show/show,
+						subsubsectionstyle=show/show/show/show
+					]
+				\else
+					\tableofcontents[
+						currentsection,
+						subsectionstyle=show/show/hide,
+						subsubsectionstyle=show/show/show/hide
+					]
+				\fi
 			\end{frame}
 		}
 	\fi

@@ -1,11 +1,23 @@
 \mode<presentation>
+\makeatletter
 
-\setbeamerfont{frametitle}{size=\normalsize}
-\setbeamerfont{framesubtitle}{size=\footnotesize}
+\let\cleandigo@sizeLarge\Large
+\let\cleandigo@sizeMed\normalsize
+\let\cleandigo@sizeSmall\small
+
 \setbeamerfont{subtitle}{size=\Large}
 \setbeamerfont{title}{size=\huge,series=\bfseries}
 \setbeamerfont{author}{size=\large,series=\bfseries}
 \setbeamerfont{date}{size=\large,series=\bfseries}
 \setbeamerfont{caption name}{series=\bfseries}
+
+\setbeamerfont{frametitle}{size=\cleandigo@sizeLarge}
+\setbeamerfont{framesubtitle}{size=\cleandigo@sizeMed}
+\setbeamerfont{page number in head/foot}{size=\cleandigo@sizeMed}
+\setbeamerfont{subsection in head/foot}{size=\cleandigo@sizeMed}
+\setbeamerfont{section in head/foot}{size=\cleandigo@sizeMed}
+
 \setbeamertemplate{caption label separator}[period]
+
+\makeatother
 \mode<all>

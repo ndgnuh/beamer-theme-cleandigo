@@ -47,9 +47,9 @@
 \newcommand{\citef}[1]{\cite{#1}\ffcite{#1}}
 
 \newcommand{\Image}[1]{%
-	\sbox0{\includegraphics[height=0.65\paperheight]{#1}}%
+	\sbox0{\includegraphics[height=\graphicht]{#1}}%
 	\ifdim\wd0 < \textwidth
-	\includegraphics[height=0.65\paperheight]{#1}%
+	\includegraphics[height=\graphicht]{#1}%
 	\else
 	\includegraphics[width=\textwidth]{#1}%
 	\fi%
@@ -75,7 +75,7 @@
 % 	\footlinesectionontrue
 % }
 
-
+\usepackage{avant}
 
 % === BEAMER STUFF %%%
 
@@ -83,7 +83,7 @@
 
 \begin{document}
 
-\begin{frame}[noframenumbering,Title]{}
+\begin{frame}[noframenumbering,plain]{}
 	\relax
 	\vfill
 	{
@@ -127,7 +127,7 @@
 \begin{frame}{Giới thiệu}
 	\begin{figure}
 		\centering
-		\includegraphics[width=\textwidth]{figures/fbm(p).jpg}
+		\includegraphics[height=\graphicht]{figures/fbm(p).jpg}
 		\caption{%
 			Inigo Quilez--$f(p) = \fbm(p+\fbm(p+\fbm(p)))$%
 			\footnote[frame]{\url{https://iquilezles.org/articles/warp/}}
@@ -137,7 +137,7 @@
 \end{frame}
 
 \section{Chuyển động Brown}
-\begin{frame}{Tính chất}
+\begin{frame}[nosection]{Tính chất}
 	\begin{prop}\label{prop:nowhere-diff-brown}
 		Chuyển động Brown hầu chắc chắn không khả vi
 		tại $t>0$\citef{S096:17}.
@@ -165,7 +165,9 @@
 	\end{align}
 \end{frame}
 
-\section{Chuyển động Brown và Transformer}
+	\section{Chuyển động Brown và Transformer}
+
+\subsection{ASDKALSJDALKJ}
 
 \begin{frame}{Một số định nghĩa}
 	\begin{defn}[Layer Normalization]
@@ -192,7 +194,7 @@
 \begin{frame}{Một số định nghĩa}
 	\begin{figure}
 		\centering
-		\Image{figures/transformer-layer.png}
+		\includegraphics[height=\graphicht]{figures/transformer-layer.png}
 		\caption{Một lớp transformer}
 	\end{figure}
 \end{frame}
@@ -231,10 +233,10 @@
 
 \section{Chuyển động Brown và $\Delta$VAE}
 
-\begin{frame}{VAE}
+\begin{frame}[nosection]{VAE}
 	\begin{figure}
 		\centering
-		\Image{figures/vae.png}
+		\includegraphics[height=\graphicht]{figures/vae.png}
 		\caption{Ý tưởng của VAE}
 	\end{figure}
 \end{frame}
@@ -286,10 +288,9 @@
 \end{frame}
 
 \begin{frame}{$\Delta$VAE}
-	\vspace{1em}
 	\begin{figure}
 		\centering
-		\includegraphics[width=0.6\textwidth]{figures/random-walk-manifold-1d.png}
+		\includegraphics[height=\graphicht]{figures/random-walk-manifold-1d.png}
 		\caption{Du động ngẫu nhiên trên một mặt trơn $Z$.\citef{DiffusionVAE}}
 		\label{fig:random-walk-manifold}
 	\end{figure}
@@ -305,16 +306,15 @@
 \end{frame}
 
 \begin{frame}{$\Delta$VAE}
-	\vspace{-1em}
 	\begin{figure}
 		\begin{subfigure}{0.49\textwidth}
 			\centering
-			\Image{figures/mnist-latent-torus.png}
+			\includegraphics[height=\graphicht]{figures/mnist-latent-torus.png}
 			\caption{Mặt hình xuyến}
 		\end{subfigure}
 		\begin{subfigure}{0.49\textwidth}
 			\centering
-			\Image{figures/mnist-latent-sphere_all.png}
+			\includegraphics[height=\graphicht]{figures/mnist-latent-sphere_all.png}
 			\caption{Cầu đơn vị}
 		\end{subfigure}
 		\caption{Dữ liệu MNIST nhúng lên các mặt khác nhau}

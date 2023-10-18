@@ -1,5 +1,31 @@
 \ProvidesPackage{beamerouterthemecleandigo}[Cleandigo outer theme]
 \mode<presentation>
+\makeatletter
+\usetikzlibrary{shadows}
+
+% BEAMER FLAGS
+\newif\ifbeamer@nosection
+\beamer@nosectionfalse
+
+% CALCULATE HEIGHT FOR GRAPHICS
+\newlength{\graphicht}
+\AtBeginEnvironment{figure}{%
+	\setlength{\graphicht}{
+		\textheight-
+		\baselineskip-
+		\parskip-
+		\abovecaptionskip-
+		\belowcaptionskip
+	}%
+	% Foot height is 8mm and head height is 12mm, the circle is 4mm
+	\ifbeamer@plainframe\else%
+		\ifbeamer@nosection
+			\addtolength{\graphicht}{-\beamer@rightmargin}
+		\else
+			\addtolength{\graphicht}{-1.8\beamer@rightmargin}
+		\fi
+	\fi%
+}
 
 % No sidebar
 \setbeamersize{sidebar width left=0pt}
@@ -8,82 +34,80 @@
 \providecommand{\insertframetitle}{}
 \providecommand{\insertframesubtitle}{}
 
-% Set the text margin to be the same as the frametitle margin
-\def\unileftskip{0.333in}
-\setbeamersize{text margin left=\unileftskip,text margin right=\unileftskip}
-\useoutertheme[footline=authortitle]{miniframes}
-\BeforeBeginEnvironment{frame}{
-	\setbeamertemplate{headline}{%
-		\relax\nointerlineskip % get rid of the weird blankspace
-		\usebeamerfont{frametitle}
-		\begin{beamercolorbox}[
-				sep=0pt,
-				leftskip=\unileftskip,
-				rightskip=\unileftskip, % HALF
-				wd=\paperwidth,
-				ht=2em,
-				dp=1em
-			]{frametitle}%
-			\ifx\insertframetitle\empty
-				{}\hfill%
-				\insertframenumber{}/\inserttotalframenumber%
-			\else
-				\insertframetitle%
-				\hfill%
-				\insertframenumber{}/\inserttotalframenumber%
-			\fi
+
+\defbeamertemplate*{frametitle}{cleandigo}{%
+	\ifbeamer@plainframe\relax\else%
+		\newcommand{\lm}{\beamer@leftmargin}% lEFT mARGIN
+		\newcommand{\rmar}{\beamer@rightmargin}% lEFT mARGIN
+		\sbox0{\insertframetitle}%
+		\nointerlineskip%
+		\begin{beamercolorbox}[wd=\paperwidth, ht=\rmar]{frametitle}%
+			\begin{tikzpicture}[overlay]
+				\usebeamerfont{frametitle}%
+				\usebeamercolor{frametitle}%
+				\fill[bg] (0, 0) rectangle (\paperwidth, \rmar) {};
+				%\fill[white] (0, 6mm) rectangle (\paperwidth, 6.1mm) {};
+				\node[inner sep=0pt, anchor=west, align=left] at (\beamer@leftmargin, 0.5\rmar) {\insertframetitle};
+			\end{tikzpicture}%
 		\end{beamercolorbox}%
-		\usebeamerfont{framesubtitle}
-		\ifx\insertframesubtitle\empty
-			\begin{beamercolorbox}[sep=0pt,wd=\paperwidth,ht=2pt,dp=2pt,vmode]{framesubtitle}%
-			\end{beamercolorbox}%
-		\else
-			\begin{beamercolorbox}[left,wd=\paperwidth,ht=2.25ex,dp=1ex,leftskip=\unileftskip]{framesubtitle}%
-				\insertframesubtitle
-			\end{beamercolorbox}%
-		\fi
-		\ifx\insertframetitle\empty
-			\gdef\beamer@frametitle{~}
-		\fi
-	}
+	\fi%
+}
 
-	\setbeamertemplate{frametitle}{\vspace{2.25ex}}
 
-	% Footline
-	\setbeamertemplate{footline}{
-		% If show section in footline
-		\iffootlinesection
+\newcommand{\insertsectionformat}{%
+	\ifx\insertsection\empty\else%
+		\insertsectionnumber%
+		\ifx\insertsubsection\empty\else%
+			.\insertsubsectionnumber%
+		\fi%
+		\hspace{0.5em}%
+		\insertsection%
+		\ifx\insertsubsection\empty\else%
+			\hspace{0.5ex}\textbullet\hspace{0.5ex}%
+			\insertsubsection%
+		\fi%
+	\fi%
+}
+
+\defbeamertemplate*{footline}{cleandigo}{%
+	\ifbeamer@plainframe\relax\else%
+		\ifbeamer@nosection\else%
+			\nointerlineskip%
 			\begin{beamercolorbox}[
-					left,
 					wd=\paperwidth,
-					ht=2.25ex,
-					dp=1ex,
-					leftskip=\unileftskip
-				]{frametitle}%
-				\ifx\insertsection\empty\else
-					\insertsection
-				\fi
-				\ifx\insertsubsection\empty\else
-					\ /\ \insertsubsection
-				\fi
-			\end{beamercolorbox}%
-		\else{\relax}
+					ht=0.75\beamer@rightmargin,
+				]{section in head/foot}%
+				\begin{tikzpicture}[overlay]
+					\usebeamerfont{section in head/foot}
+					\usebeamercolor{section in head/foot}
+					%\fill[white] (0, 6mm) rectangle (\paperwidth, 6.1mm) {};
+					\node[inner sep=0pt, anchor=west, align=left] at (\beamer@leftmargin, 0.325\beamer@rightmargin ) {\insertsectionformat};
+				\end{tikzpicture}%
+			\end{beamercolorbox}
+		\fi%
+		% NUMBERING
+		\ifbeamer@noframenumbering\else%
+			\begin{tikzpicture}[remember picture,overlay,every shadow/.style={shadow xshift=0ex, shadow yshift=-0.1ex, opacity=.7,fill=md-black}]
+				\usebeamercolor{page number in head/foot}%
+				\usebeamerfont{page number in head/foot}%
+				\node[
+					drop shadow,
+					circle,
+					fill=bg,
+					xshift=-\beamer@rightmargin,
+					yshift=-\beamer@rightmargin,
+				] at (current page.north east){%
+					\textcolor{fg}{\insertframenumber/\inserttotalframenumber}};
+			\end{tikzpicture}%
 		\fi
-	}
+	\fi%
+	\global\beamer@nosectionfalse%
 }
 
-\makeatletter
-\define@key{beamerframe}{Title}[true]{
-	\setbeamertemplate{headline}{}
-	\setbeamertemplate{footline}{}
+% CUSTOM KEY
+\define@key{beamerframe}{nosection}[true]{%
+	\beamer@nosectiontrue
 }
-\define@key{beamerframe}{nofootline}[true]{
-	\setbeamertemplate{footline}{}
-}
+
 \makeatother
-
-% TITLE PAGE WEIRD PADDING
-\setbeamertemplate{title page}{	\nointerlineskip }
-
-
 \mode<all>

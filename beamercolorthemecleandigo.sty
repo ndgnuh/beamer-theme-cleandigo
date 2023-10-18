@@ -2,17 +2,13 @@
 \ProvidesPackage{beamercolorthemecleandigo}[Cleandigo color theme]
 
 %
-\definecolor{myblack}{HTML}{231f20}
-\definecolor{frametitlebg}{HTML}{C02034}
-\definecolor{framesubtitlebg}{HTML}{E59C0A}
+\definecolor{md-black}{HTML}{231f20}
+\definecolor{md-white}{HTML}{e3e4e5}
 
 % material design color
-\definecolor{md-primary}{HTML}{303F9F}
-\definecolor{md-primary-alt}{HTML}{1A237E}
-\definecolor{md-primary-500}{HTML}{3F51B5}
-\definecolor{md-primary-200}{HTML}{9FA8DA}
+\definecolor{md-primary}{HTML}{1a237e}
+\definecolor{md-accent}{HTML}{d81b60}
 
-\definecolor{md-accent}{HTML}{FF80AB}
 % color palettes
 \setbeamercolor{palette primary}{fg=md-primary}
 \setbeamercolor{palette secondary}{fg=md-accent}
@@ -22,18 +18,20 @@
 \setbeamercolor{partname}{fg=md-primary}
 %% table of contents
 \setbeamercolor{section in toc}{fg=md-primary}
-\setbeamercolor{subsection in toc}{fg=myblack}
-\setbeamercolor{section number projected}{fg=myblack}
-\setbeamercolor{subsection number projected}{fg=myblack}
-\setbeamercolor{subsubsection number projected}{fg=myblack}
-\setbeamercolor{item}{fg=md-primary-alt,bg=md-accent}
+\setbeamercolor{subsection in toc}{fg=md-black}
+\setbeamercolor{section number projected}{fg=md-black}
+\setbeamercolor{subsection number projected}{fg=md-black}
+\setbeamercolor{subsubsection number projected}{fg=md-black}
+\setbeamercolor{item}{fg=md-primary, bg=md-accent}
 %% Figures and table
-\setbeamercolor{caption}{fg=myblack}
+\setbeamercolor{caption}{fg=md-black}
 \setbeamercolor{caption name}{fg=md-primary}
 %% Elements of a frame
-\setbeamercolor{framesubtitle}{bg=md-primary-200,fg=md-primary-alt}
-\setbeamercolor{frametitle}{bg=md-primary-alt,fg=white}
-\setbeamercolor{page number in head/foot}{bg=md-primary-alt,fg=white}
+\setbeamercolor{framesubtitle}{bg=md-primary, fg=md-white}
+\setbeamercolor{frametitle}{bg=md-primary, fg=md-white}
+\setbeamercolor{page number in head/foot}{bg=md-accent, fg=md-white}
+\setbeamercolor{section in head/foot}{bg=md-primary, fg=md-white}
+\setbeamercolor{subsection in head/foot}{bg=md-primary, fg=md-white}
 %% Blocks
 \setbeamercolor{block title}{fg=md-primary}
 \mode<all>
