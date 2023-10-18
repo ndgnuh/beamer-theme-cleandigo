@@ -11,11 +11,7 @@
 \newlength{\graphicht}
 \AtBeginEnvironment{figure}{%
 	\setlength{\graphicht}{
-		\textheight-
-		\baselineskip-
-		\parskip-
-		\abovecaptionskip-
-		\belowcaptionskip
+		\textheight-\belowcaptionskip
 	}%
 	% Foot height is 8mm and head height is 12mm, the circle is 4mm
 	\ifbeamer@plainframe\else%
@@ -50,22 +46,7 @@
 				\node[inner sep=0pt, anchor=west, align=left] at (\beamer@leftmargin, 0.5\rmar) {\insertframetitle};
 			\end{tikzpicture}%
 		\end{beamercolorbox}%
-		% NUMBERING
-		\ifbeamer@noframenumbering\else%
-			\begin{tikzpicture}[remember picture,overlay,every shadow/.style={shadow xshift=0ex, shadow yshift=-0.1ex, opacity=.7,fill=md-black}]
-				\usebeamercolor{page number in head/foot}%
-				\usebeamerfont{page number in head/foot}%
-				\node[
-					drop shadow,
-					circle,
-					fill=bg,
-					xshift=-\beamer@rightmargin,
-					yshift=-\beamer@rightmargin,
-				] at (current page.north east){%
-					\textcolor{fg}{\insertframenumber/\inserttotalframenumber}};
-			\end{tikzpicture}%
-		\fi
-	\fi%
+    \fi
 }
 
 
@@ -95,15 +76,39 @@
 					ht=0.8\beamer@rightmargin,
 				]{section in head/foot}%
 				\begin{tikzpicture}[overlay]
-					\usebeamerfont{section in head/foot}
-					\usebeamercolor{section in head/foot}
-					%\fill[white] (0, 6mm) rectangle (\paperwidth, 6.1mm) {};
+					\usebeamerfont{section in head/foot}%
+					\usebeamercolor{section in head/foot}%
 					\node[inner sep=0pt, anchor=west, align=left] at (\beamer@leftmargin, 0.4\beamer@rightmargin ) {\insertsectionformat};
 				\end{tikzpicture}%
-			\end{beamercolorbox}
+			\end{beamercolorbox}%
+		\fi%
+		\ifbeamer@noframenumbering\else%
+            \nointerlineskip%
+            \begin{beamercolorbox}[wd=0pt, ht=0pt]{page number in head/foot}%
+                \begin{tikzpicture}[
+                    remember picture,
+                    overlay,
+                    every shadow/.style={
+                        shadow xshift=0ex, 
+                        shadow yshift=-0.1ex, opacity=.7,
+                        fill=md-black}
+                    ]
+    				\usebeamercolor{page number in head/foot}%
+    				\usebeamerfont{page number in head/foot}%
+    				\node[
+    					drop shadow,
+    					circle,
+    					fill=bg,
+    					xshift=-\beamer@rightmargin,
+    					yshift=-\beamer@rightmargin,
+    				] at (current page.north east){%
+    					\textcolor{fg}{\insertframenumber/\inserttotalframenumber}};%
+    			\end{tikzpicture}%
+            \end{beamercolorbox}%
 		\fi%
 	\fi%
 }
+
 
 % CUSTOM KEY
 \define@key{beamerframe}{nosection}[true]{%

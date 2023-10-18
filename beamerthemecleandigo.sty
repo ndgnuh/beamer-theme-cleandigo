@@ -37,20 +37,20 @@
 \AtBeginDocument{
 	\iftocsection
 		\AtBeginSection[] {
-			\begin{frame}[noframenumbering,nosection]{\contentsname}
-				\iffirsttoc
-					\global\firsttocfalse
+			\begin{frame}[nosection]{\contentsname}%
+				\iffirsttoc%
+					\global\firsttocfalse%
 					\tableofcontents[
 						subsectionstyle=show/show/show,
 						subsubsectionstyle=show/show/show/show
 					]
-				\else
+				\else%
 					\tableofcontents[
 						currentsection,
 						subsectionstyle=show/show/hide,
 						subsubsectionstyle=show/show/show/hide
-					]
-				\fi
+					]%
+				\fi%
 			\end{frame}
 		}
 	\fi
