@@ -50,6 +50,21 @@
 				\node[inner sep=0pt, anchor=west, align=left] at (\beamer@leftmargin, 0.5\rmar) {\insertframetitle};
 			\end{tikzpicture}%
 		\end{beamercolorbox}%
+		% NUMBERING
+		\ifbeamer@noframenumbering\else%
+			\begin{tikzpicture}[remember picture,overlay,every shadow/.style={shadow xshift=0ex, shadow yshift=-0.1ex, opacity=.7,fill=md-black}]
+				\usebeamercolor{page number in head/foot}%
+				\usebeamerfont{page number in head/foot}%
+				\node[
+					drop shadow,
+					circle,
+					fill=bg,
+					xshift=-\beamer@rightmargin,
+					yshift=-\beamer@rightmargin,
+				] at (current page.north east){%
+					\textcolor{fg}{\insertframenumber/\inserttotalframenumber}};
+			\end{tikzpicture}%
+		\fi
 	\fi%
 }
 
@@ -71,37 +86,23 @@
 
 \defbeamertemplate*{footline}{cleandigo}{%
 	\ifbeamer@plainframe\relax\else%
-		\ifbeamer@nosection\else%
+		\ifbeamer@nosection%
+            \global\beamer@nosectionfalse%
+        \else%
 			\nointerlineskip%
 			\begin{beamercolorbox}[
 					wd=\paperwidth,
-					ht=0.75\beamer@rightmargin,
+					ht=0.8\beamer@rightmargin,
 				]{section in head/foot}%
 				\begin{tikzpicture}[overlay]
 					\usebeamerfont{section in head/foot}
 					\usebeamercolor{section in head/foot}
 					%\fill[white] (0, 6mm) rectangle (\paperwidth, 6.1mm) {};
-					\node[inner sep=0pt, anchor=west, align=left] at (\beamer@leftmargin, 0.325\beamer@rightmargin ) {\insertsectionformat};
+					\node[inner sep=0pt, anchor=west, align=left] at (\beamer@leftmargin, 0.4\beamer@rightmargin ) {\insertsectionformat};
 				\end{tikzpicture}%
 			\end{beamercolorbox}
 		\fi%
-		% NUMBERING
-		\ifbeamer@noframenumbering\else%
-			\begin{tikzpicture}[remember picture,overlay,every shadow/.style={shadow xshift=0ex, shadow yshift=-0.1ex, opacity=.7,fill=md-black}]
-				\usebeamercolor{page number in head/foot}%
-				\usebeamerfont{page number in head/foot}%
-				\node[
-					drop shadow,
-					circle,
-					fill=bg,
-					xshift=-\beamer@rightmargin,
-					yshift=-\beamer@rightmargin,
-				] at (current page.north east){%
-					\textcolor{fg}{\insertframenumber/\inserttotalframenumber}};
-			\end{tikzpicture}%
-		\fi
 	\fi%
-	\global\beamer@nosectionfalse%
 }
 
 % CUSTOM KEY
